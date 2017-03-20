@@ -16,9 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -26,12 +24,16 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import mmm.istic.fr.quickdish.R;
 
 public class scanActivity extends AppCompatActivity {
 
 
+    //barcode scanner
     private static final String LOG_TAG = "Barcode Scanner API";
     private static final int PHOTO_REQUEST = 10;
     private TextView scanResults;
@@ -40,6 +42,12 @@ public class scanActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 20;
     private static final String SAVED_INSTANCE_URI = "uri";
     private static final String SAVED_INSTANCE_RESULT = "result";
+
+    //Menu list
+    android.widget.ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> itemList;
+    HashMap<String, List<String>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,53 @@ public class scanActivity extends AppCompatActivity {
             scanResults.setText("Could not set up the detector!");
             return;
         }
+
+        // get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+        // preparing list data
+        itemList = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        listAdapter = new ExpandableListAdapter(this, itemList, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+        // Listview on child click listener
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        itemList.get(groupPosition)
+                                + " : "
+                                + listDataChild.get(
+                                itemList.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        itemList.clear();
+        //set option about product
+        itemList.add("Entrées ");
+        itemList.add("Plats");
+        itemList.add("Desserts");
+
+        // show the ingredients
+        List<String> entrees = new ArrayList<String>();
+        List<String> plats = new ArrayList<String>();
+        List<String> desserts = new ArrayList<String>();
+        entrees.add("test");
+        plats.add("test");
+        desserts.add("test");
+
+        listDataChild.put(itemList.get(0), entrees);
+        listDataChild.put(itemList.get(1), plats);
+        listDataChild.put(itemList.get(2), desserts);
+
     }
 
 
@@ -93,12 +148,8 @@ public class scanActivity extends AppCompatActivity {
                     Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                     SparseArray<Barcode> barcodes = detector.detect(frame);
 
-                    System.err.println("result barcode :"+ barcodes.toString());
-
-                    Toast.makeText(this, barcodes.toString(), Toast.LENGTH_SHORT);
-
                     Barcode code = barcodes.valueAt(0);
-                    barcodes.get(0);
+
                     scanResults.setText(scanResults.getText() + code.displayValue + "\n");
 
                     if (barcodes.size() == 0) {
