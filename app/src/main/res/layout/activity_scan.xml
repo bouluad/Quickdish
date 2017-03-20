@@ -11,6 +11,14 @@
     tools:context="mmm.istic.fr.quickdish.activities.scanActivity">
 
 
+    <ExpandableListView
+        android:id="@+id/lvExp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </ExpandableListView>
+
     <TextView
         android:id="@+id/scan_results"
         android:layout_width="wrap_content"
