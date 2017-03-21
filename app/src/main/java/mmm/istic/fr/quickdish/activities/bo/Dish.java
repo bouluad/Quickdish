@@ -11,17 +11,20 @@ public class Dish {
     private String description;
     private String price;
     private int numberOfPoint;
+    private String type;
+
 
 
     public Dish() {
     }
 
-    public Dish(String idResto, String title, String description, String price, int numberOfPoint) {
+    public Dish(String idResto, String title, String description, String price, int numberOfPoint, String type) {
         this.idResto = idResto;
         this.title = title;
         this.description = description;
         this.price = price;
         this.numberOfPoint = numberOfPoint;
+        this.type = type;
     }
 
     public Dish(int id, String idResto, String title, String description, String price, int numberOfPoint) {
@@ -79,5 +82,13 @@ public class Dish {
 
     public void setNumberOfPoint(int numberOfPoint) {
         this.numberOfPoint = numberOfPoint;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
