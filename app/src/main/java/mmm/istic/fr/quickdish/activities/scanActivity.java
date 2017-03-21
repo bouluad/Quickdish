@@ -22,6 +22,10 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -49,10 +53,24 @@ public class scanActivity extends AppCompatActivity {
     List<String> itemList;
     HashMap<String, List<String>> listDataChild;
 
+    //Save menu list in JSONObject
+    JSONObject jsonResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+        //initialise jsonResult for test
+        try {
+            jsonResult = new JSONObject("{" +
+                    "\"entrees\": [\"entree1\", \"entree2\", \"entree3\", \"entree4\", \"entree5\"]," +
+                    "\"plats\": [\"plat1\", \"plat2\", \"plat3\"]," +
+                    "\"desserts\": [\"dessert1\", \"dessert2\", \"dessert3\", \"dessert4\"]" +
+                    "}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Button button = (Button) findViewById(R.id.scanButton);
         scanResults = (TextView) findViewById(R.id.scan_results);
@@ -104,26 +122,73 @@ public class scanActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         itemList.clear();
         //set option about product
-        itemList.add("Entrées ");
+        itemList.add("Entrées");
         itemList.add("Plats");
         itemList.add("Desserts");
 
+    }
+
+
+    public void showMenuList (){
         // show the ingredients
         List<String> entrees = new ArrayList<String>();
         List<String> plats = new ArrayList<String>();
         List<String> desserts = new ArrayList<String>();
-        entrees.add("test");
-        plats.add("test");
-        desserts.add("test");
+
+
+
+        //parse jsonResult to show information
+        JSONArray jsonEntrees = new JSONArray();
+        JSONArray jsonPlats = new JSONArray();
+        JSONArray jsonDesserts = new JSONArray();
+        try {
+            jsonEntrees = jsonResult.getJSONArray("entrees");
+            jsonPlats = jsonResult.getJSONArray("plats");
+            jsonDesserts = jsonResult.getJSONArray("desserts");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < jsonEntrees.length(); i++) {
+            try {
+                String element = (String) jsonEntrees.get(i);
+                entrees.add(element);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < jsonPlats.length(); i++) {
+            try {
+                String element = (String) jsonPlats.get(i);
+                plats.add(element);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < jsonDesserts.length(); i++) {
+            try {
+                String element = (String) jsonDesserts.get(i);
+                desserts.add(element);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         listDataChild.put(itemList.get(0), entrees);
         listDataChild.put(itemList.get(1), plats);
         listDataChild.put(itemList.get(2), desserts);
-
     }
 
+
+    public void getMenuFromFireBase (String barcode){
+        // TODO : request the firebase to get menu using barcode and save result in jsonResult
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -140,6 +205,13 @@ public class scanActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //request for menuList from firebase
+        getMenuFromFireBase (scanResults.getText().toString());
+
+        //show the menu list
+        showMenuList();
+
         if (requestCode == PHOTO_REQUEST && resultCode == RESULT_OK) {
             launchMediaScanIntent();
             try {
@@ -151,6 +223,8 @@ public class scanActivity extends AppCompatActivity {
                     Barcode code = barcodes.valueAt(0);
 
                     scanResults.setText(scanResults.getText() + code.displayValue + "\n");
+
+
 
                     if (barcodes.size() == 0) {
                         scanResults.setText("Scan Failed: Found nothing to scan");
@@ -164,6 +238,7 @@ public class scanActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, e.toString());
             }
         }
+
     }
 
     private void takePicture() {
