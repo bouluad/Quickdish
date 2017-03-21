@@ -1,27 +1,29 @@
 package mmm.istic.fr.quickdish.activities.bo;
 
+import java.util.List;
+
 /**
  * Created by bouluad on 20/03/17.
  */
 public class Order {
 
     private int id;
-    private Dish dish;
+    private List<Dish> dishs;
     private int quantity;
     private String tableNumber;
     private boolean validation;
 
+    public Order(List<Dish> dishs, int quantity, String tableNumber, boolean validation) {
+        this.dishs = dishs;
+        this.quantity = quantity;
+        this.tableNumber = tableNumber;
+        this.validation = validation;
+    }
 
     public Order() {
 
     }
 
-    public Order(Dish dish, int quantity, String tableNumber, boolean validation) {
-        this.dish = dish;
-        this.quantity = quantity;
-        this.tableNumber = tableNumber;
-        this.validation = validation;
-    }
 
     public int getId() {
         return id;
@@ -31,12 +33,12 @@ public class Order {
         this.id = id;
     }
 
-    public Dish getDish() {
-        return dish;
+    public List<Dish> getDishs() {
+        return dishs;
     }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
+    public void setDishs(List<Dish> dishs) {
+        this.dishs = dishs;
     }
 
     public int getQuantity() {
