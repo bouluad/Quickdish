@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -28,13 +29,16 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mmm.istic.fr.quickdish.R;
+import mmm.istic.fr.quickdish.activities.bo.Dish;
+import mmm.istic.fr.quickdish.activities.bo.Order;
 
-public class scanActivity extends AppCompatActivity {
+public class ScanActivity extends AppCompatActivity {
 
 
     //barcode scanner
@@ -55,6 +59,10 @@ public class scanActivity extends AppCompatActivity {
 
     //Save menu list in JSONObject
     JSONObject jsonResult;
+
+    //Order
+    private Order order;
+    List<Dish> dishs = new ArrayList<Dish>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,7 @@ public class scanActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityCompat.requestPermissions(scanActivity.this, new
+                ActivityCompat.requestPermissions(ScanActivity.this, new
                         String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
             }
         });
@@ -105,12 +113,23 @@ public class scanActivity extends AppCompatActivity {
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
+
+        final int[] totalDishs = {0};
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
+
+
+                dishs.add(totalDishs[0], new Dish("1", listDataChild.get(
+                        itemList.get(groupPosition)).get(
+                        childPosition), "description \n blablabla", "10 €", 0, "entree"));
+
+                totalDishs[0]++;
+                order = new Order(dishs, totalDishs[0], "1", false);
+
                 Toast.makeText(
                         getApplicationContext(),
                         itemList.get(groupPosition)
@@ -124,16 +143,32 @@ public class scanActivity extends AppCompatActivity {
 
 
 
-
+        // initialise the menu list display
         itemList.clear();
-        //set option about product
         itemList.add("Entrées");
         itemList.add("Plats");
         itemList.add("Desserts");
 
     }
 
+    // validate the command by click on button validate
+    public void validateCommand(View view){
+        System.out.println(order.dishsToString());
 
+        Intent myIntent = new Intent( ScanActivity.this, CommandResumeActivity.class);
+
+
+        // passe the order to next activity
+        myIntent.putExtra("order", order);
+        setResult(10, myIntent);
+        finish();
+
+        startActivity(myIntent);
+
+
+    }
+
+    //parse result (json file) and add elements to menu list
     public void showMenuList (){
         // show the ingredients
         List<String> entrees = new ArrayList<String>();
@@ -185,7 +220,7 @@ public class scanActivity extends AppCompatActivity {
         listDataChild.put(itemList.get(2), desserts);
     }
 
-
+    // request the firebase to get menu list by barcode
     public void getMenuFromFireBase (String barcode){
         // TODO : request the firebase to get menu using barcode and save result in jsonResult
     }
@@ -198,7 +233,7 @@ public class scanActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     takePicture();
                 } else {
-                    Toast.makeText(scanActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScanActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
         }
     }

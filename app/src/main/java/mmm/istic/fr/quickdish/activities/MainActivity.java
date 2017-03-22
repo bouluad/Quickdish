@@ -1,11 +1,6 @@
 package mmm.istic.fr.quickdish.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,12 +16,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public  void orderMenuActivity (View view){
-        Intent myIntent = new Intent( MainActivity.this, scanActivity.class);
+        Intent myIntent = new Intent( MainActivity.this, ScanActivity.class);
         startActivity(myIntent);
     }
 
     public void createCardActivity (View view){
-        Intent myIntent = new Intent( MainActivity.this, registerActivity.class);
+        Intent myIntent = new Intent( MainActivity.this, RegisterActivity.class);
         startActivity(myIntent);
     }
    }

@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="mmm.istic.fr.quickdish.activities.scanActivity">
+    tools:context="mmm.istic.fr.quickdish.activities.ScanActivity">
 
 
     <ExpandableListView
@@ -30,9 +30,20 @@
         android:id="@+id/scanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:text="Scan QR code"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:text="Scan QR code"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="18dp" />
+
+    <Button
+        android:onClick="validateCommand"
+        android:id="@+id/validateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="validate command"
+        android:layout_alignBaseline="@+id/scanButton"
+        android:layout_alignBottom="@+id/scanButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp" />
 </RelativeLayout>

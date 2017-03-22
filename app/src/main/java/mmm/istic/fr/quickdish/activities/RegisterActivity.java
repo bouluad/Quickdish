@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import mmm.istic.fr.quickdish.R;
 
-public class registerActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
