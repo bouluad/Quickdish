@@ -1,9 +1,7 @@
 package mmm.istic.fr.quickdish.activities;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import mmm.istic.fr.quickdish.R;
@@ -16,9 +14,10 @@ public class CommandResumeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_command_resume);
 
-        Order order = getIntent().getParcelableExtra("order");
+
+        Order order = (Order) getIntent().getSerializableExtra("order");
         String orderString = order.dishsToString();
-        System.out.println("order -------> :"+ orderString);
+        System.out.println("order -------> :" + orderString);
         TextView resumeCommand = (TextView) findViewById(R.id.resumeCommand);
         resumeCommand.setText(orderString);
     }

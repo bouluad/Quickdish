@@ -1,9 +1,11 @@
 package mmm.istic.fr.quickdish.activities.bo;
 
+import java.io.Serializable;
+
 /**
  * Created by bouluad on 20/03/17.
  */
-public class Dish {
+public class Dish implements Serializable {
 
     private int id;
     private String idResto;
@@ -12,7 +14,6 @@ public class Dish {
     private String price;
     private int numberOfPoint;
     private String type;
-
 
 
     public Dish() {
@@ -91,4 +92,5 @@ public class Dish {
     public void setType(String type) {
         this.type = type;
     }
+
 }
