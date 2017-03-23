@@ -22,6 +22,11 @@ import android.widget.*;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +65,9 @@ public class ScanActivity extends AppCompatActivity {
     //Save menu list in JSONObject
     JSONObject jsonResult;
 
+    //Database
+    FirebaseDatabase database;
+
     //Order
     private Order order;
     List<Dish> dishs = new ArrayList<Dish>();
@@ -68,6 +76,62 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+
+/*        // Connect to the Firebase database
+        database = FirebaseDatabase.getInstance();
+
+        final Dish dish1 = new Dish("1", "salade", "description \n blablabla", "10 €", 0, "entrees");
+        final Dish dish2 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "plats");
+        final Dish dish3 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "desserts");
+
+        // Get a reference to the todoItems child items it the database
+        final DatabaseReference myRef = database.getReference("Dishs");
+
+        final Button scanButton = (Button) findViewById(R.id.scanButton);
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                // Create a new child with a auto-generated ID.
+                DatabaseReference childRef1 = myRef.push();
+                DatabaseReference childRef2 = myRef.push();
+                DatabaseReference childRef3 = myRef.push();
+                // Set the child's data to the value passed in from the text box.
+                childRef1.setValue(dish1);
+                childRef2.setValue(dish2);
+                childRef3.setValue(dish3);
+
+            }
+        });*/
 
         //initialise jsonResult for test
         try {

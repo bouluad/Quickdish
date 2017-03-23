@@ -15,16 +15,11 @@ public class CommandResumeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_command_resume);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-            //Retrieve Order object
-            Order order = data.getParcelableExtra("order");
-            String orderString = order.dishsToString();
-            System.out.println("order -------> :"+ orderString);
-            TextView resumeCommand = (TextView) findViewById(R.id.resumeCommand);
-            resumeCommand.setText(order.dishsToString());
+        Order order = getIntent().getParcelableExtra("order");
+        String orderString = order.dishsToString();
+        System.out.println("order -------> :"+ orderString);
+        TextView resumeCommand = (TextView) findViewById(R.id.resumeCommand);
+        resumeCommand.setText(orderString);
     }
 }

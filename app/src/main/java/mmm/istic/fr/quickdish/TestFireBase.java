@@ -18,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import mmm.istic.fr.quickdish.activities.bo.Dish;
+
 
 public class TestFireBase extends AppCompatActivity {
 
@@ -52,8 +54,8 @@ public class TestFireBase extends AppCompatActivity {
             // each time a new child is added.
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                String value = dataSnapshot.getValue(String.class);
-                adapter.add(value);
+//                String value = dataSnapshot.getValue(String.class);
+  //              adapter.add(value);
             }
 
             // This function is called each time a child item is removed.
@@ -80,7 +82,25 @@ public class TestFireBase extends AppCompatActivity {
         final EditText text = (EditText) findViewById(R.id.todoText);
         final Button button = (Button) findViewById(R.id.addButton);
 
+        final Dish dish1 = new Dish("1", "salade", "description \n blablabla", "10 €", 0, "entrees");
+        final Dish dish2 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "plats");
+        final Dish dish3 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "desserts");
+
         button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                // Create a new child with a auto-generated ID.
+                DatabaseReference childRef1 = myRef.push();
+                DatabaseReference childRef2 = myRef.push();
+                DatabaseReference childRef3 = myRef.push();
+                // Set the child's data to the value passed in from the text box.
+                childRef1.setValue(dish1);
+                childRef2.setValue(dish2);
+                childRef3.setValue(dish3);
+
+            }
+        });
+        /*button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 // Create a new child with a auto-generated ID.
@@ -90,7 +110,7 @@ public class TestFireBase extends AppCompatActivity {
                 childRef.setValue(text.getText().toString());
 
             }
-        });
+        });*/
 
         // Delete items when clicked
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
