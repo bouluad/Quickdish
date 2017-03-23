@@ -11,13 +11,13 @@ import java.util.List;
 public class Order implements Serializable {
 
     private int id;
-    private List<Dish> dishs;
+    private List<Dish> dishes;
     private int quantity;
     private String tableNumber;
     private boolean validation;
 
-    public Order(List<Dish> dishs, int quantity, String tableNumber, boolean validation) {
-        this.dishs = dishs;
+    public Order(List<Dish> dishes, int quantity, String tableNumber, boolean validation) {
+        this.dishes = dishes;
         this.quantity = quantity;
         this.tableNumber = tableNumber;
         this.validation = validation;
@@ -44,12 +44,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public List<Dish> getDishs() {
-        return dishs;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setDishs(List<Dish> dishs) {
-        this.dishs = dishs;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public int getQuantity() {
@@ -78,8 +78,8 @@ public class Order implements Serializable {
 
     public String dishsToString() {
         String result = "";
-        for (int i = 0; i < dishs.size(); i++) {
-            result += dishs.get(i).getType() + ": " + dishs.get(i).getTitle() + "\n" + dishs.get(i).getDescription() + "\n";
+        for (int i = 0; i < dishes.size(); i++) {
+            result += dishes.get(i).getType() + ": " + dishes.get(i).getTitle() + "\n" + dishes.get(i).getDescription() + "\n\n";
         }
         return result;
     }

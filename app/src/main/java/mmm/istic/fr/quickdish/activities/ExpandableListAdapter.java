@@ -12,25 +12,26 @@ import java.util.HashMap;
 import java.util.List;
 
 import mmm.istic.fr.quickdish.R;
+import mmm.istic.fr.quickdish.bo.Dish;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Dish>> _listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<Dish>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
+
         this._listDataChild = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return (this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon)).getTitle();
     }
 
     @Override

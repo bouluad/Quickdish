@@ -55,7 +55,10 @@ public class ScanActivity extends AppCompatActivity {
     android.widget.ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> itemList;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<Dish>> listDataChild;
+
+    //save qrcode
+    private String qrCode;
 
     //Save menu list in JSONObject
     JSONObject jsonResult;
@@ -74,18 +77,6 @@ public class ScanActivity extends AppCompatActivity {
 
         // initialize database
         database = new DataBase();
-
-        //initialise jsonResult for test
-        try {
-            jsonResult = new JSONObject("{" +
-                    "\"entrees\": [\"entree1\", \"entree2\", \"entree3\", \"entree4\", \"entree5\"]," +
-                    "\"plats\": [\"plat1\", \"plat2\", \"plat3\"]," +
-                    "\"desserts\": [\"dessert1\", \"dessert2\", \"dessert3\", \"dessert4\"]" +
-                    "}");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
         scanResults = (TextView) findViewById(R.id.scan_results);
         if (savedInstanceState != null) {
@@ -117,14 +108,13 @@ public class ScanActivity extends AppCompatActivity {
 
         // preparing list data
         itemList = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<Dish>>();
 
         listAdapter = new ExpandableListAdapter(this, itemList, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
 
-        final int[] totalDishs = {0};
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -133,12 +123,9 @@ public class ScanActivity extends AppCompatActivity {
                                         int groupPosition, int childPosition, long id) {
 
 
-                dishes.add(totalDishs[0], new Dish("1", listDataChild.get(
-                        itemList.get(groupPosition)).get(
-                        childPosition), "description \n blablabla", "10 €", 0, "entree"));
+                dishes.add(listDataChild.get(itemList.get(groupPosition)).get(childPosition));
 
-                totalDishs[0]++;
-                order = new Order(dishes, totalDishs[0], "1", false);
+                order = new Order(dishes, 1, qrCode, false);
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -146,7 +133,7 @@ public class ScanActivity extends AppCompatActivity {
                                 + " : "
                                 + listDataChild.get(
                                 itemList.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT).show();
+                                childPosition).getTitle(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -179,26 +166,26 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     //parse result (json file) and add elements to menu list
-    public void showMenuList (){
+    public void showMenuList (String barcode){
         // show the menu
-        final List<String> entrees = new ArrayList<String>();
-        final List<String> plats = new ArrayList<String>();
-        final List<String> desserts = new ArrayList<String>();
+        final List<Dish> entrees = new ArrayList<Dish>();
+        final List<Dish> plats = new ArrayList<Dish>();
+        final List<Dish> desserts = new ArrayList<Dish>();
 
-        database.getDishsByRestoId("100", new DataBase.Command() {
+        database.getDishsByRestoId(barcode, new DataBase.Command() {
             @Override
             public void exec(Object o) {
                 Dish dish = ((Dish) o);
                 String type = dish.getType();
                 switch (type){
                     case "entrees":
-                        entrees.add(dish.getTitle());
+                        entrees.add(dish);
                         break;
                     case "plats":
-                        plats.add(dish.getTitle());
+                        plats.add(dish);
                         break;
                     case "desserts":
-                        desserts.add(dish.getTitle());
+                        desserts.add(dish);
                         break;
                     default:
                         break;
@@ -210,49 +197,6 @@ public class ScanActivity extends AppCompatActivity {
         listDataChild.put(itemList.get(0), entrees);
         listDataChild.put(itemList.get(1), plats);
         listDataChild.put(itemList.get(2), desserts);
-
-        //parse jsonResult to show information
-/*        JSONArray jsonEntrees = new JSONArray();
-        JSONArray jsonPlats = new JSONArray();
-        JSONArray jsonDesserts = new JSONArray();
-        try {
-            jsonEntrees = jsonResult.getJSONArray("entrees");
-            jsonPlats = jsonResult.getJSONArray("plats");
-            jsonDesserts = jsonResult.getJSONArray("desserts");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < jsonEntrees.length(); i++) {
-            try {
-                String element = (String) jsonEntrees.get(i);
-                entrees.add(element);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < jsonPlats.length(); i++) {
-            try {
-                String element = (String) jsonPlats.get(i);
-                plats.add(element);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < jsonDesserts.length(); i++) {
-            try {
-                String element = (String) jsonDesserts.get(i);
-                desserts.add(element);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }*/
-    }
-
-    // request the firebase to get menu list by barcode
-    public void getMenuFromFireBase (String barcode){
-        // TODO : request the firebase to get menu using barcode and save result in jsonResult
     }
 
     @Override
@@ -271,11 +215,8 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //request for menuList from firebase
-        getMenuFromFireBase (scanResults.getText().toString());
-
         //show the menu list
-        showMenuList();
+        showMenuList("100");
 
         if (requestCode == PHOTO_REQUEST && resultCode == RESULT_OK) {
             launchMediaScanIntent();
@@ -287,15 +228,18 @@ public class ScanActivity extends AppCompatActivity {
 
                     Barcode code = barcodes.valueAt(0);
 
-                    scanResults.setText(scanResults.getText() + code.displayValue + "\n");
+                    qrCode = code.displayValue;
 
+                    //scanResults.setText(scanResults.getText() + code.displayValue + "\n");
+                    System.err.println("ID RESTAURANT = "+ code.displayValue.substring(0, 3));
+                    //showMenuList(code.displayValue.substring(0, 3));
 
 
                     if (barcodes.size() == 0) {
-                        scanResults.setText("Scan Failed: Found nothing to scan");
+                        Toast.makeText(getApplicationContext(), "Scan Failed: Found nothing to scan", Toast.LENGTH_SHORT);
                     }
                 } else {
-                    scanResults.setText("Could not set up the detector!");
+                    Toast.makeText(getApplicationContext(), "Could not set up the detector!", Toast.LENGTH_SHORT);
                 }
             } catch (Exception e) {
                 Toast.makeText(this, "Failed to load Image", Toast.LENGTH_SHORT)
@@ -305,6 +249,7 @@ public class ScanActivity extends AppCompatActivity {
         }
 
     }
+
 
     private void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

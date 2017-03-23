@@ -20,12 +20,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Dish> dishs = new ArrayList<>();
+        List<Dish> dishes = new ArrayList<>();
         Dish tajin = new Dish("100", "Tajin", "C’est une préparation sucrée ou salée où l’ont utilisé toutes les viandes, tous les poissons, les légumes comme les fruits.", "15 €", 5, "plats");
 
-        dishs.add(tajin);
+        dishes.add(tajin);
+
+
         DataBase dataBase = new DataBase();
-        dataBase.saveOrders(new Order(dishs, 2, "10002", false));
+        dataBase.saveOrders(new Order(dishes, 2, "10002", false));
     }
 
     public void orderMenuActivity(View view) {
