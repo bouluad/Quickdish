@@ -19,6 +19,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import mmm.istic.fr.quickdish.R;
+import mmm.istic.fr.quickdish.bo.Dish;
 
 
 public class TestFireBase extends AppCompatActivity {
@@ -43,11 +44,12 @@ public class TestFireBase extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         // Get a reference to the todoItems child items it the database
-        final DatabaseReference myRef = database.getReference("todoItems");
+        final DatabaseReference menuRef = database.getReference("100").child("menu");
+        final DatabaseReference commandRef = database.getReference("100").child("command");
 
         // Assign a listener to detect changes to the child items
         // of the database reference.
-        myRef.addChildEventListener(new ChildEventListener() {
+        menuRef.addChildEventListener(new ChildEventListener() {
 
             // This function is called once for each child that exists
             // when the listener is added. Then it is called
@@ -82,14 +84,47 @@ public class TestFireBase extends AppCompatActivity {
         final EditText text = (EditText) findViewById(R.id.todoText);
         final Button button = (Button) findViewById(R.id.addButton);
 
+        final Dish bpoulet = new Dish("100", "Briouate au poulet", "Petite briouate spécial ramadan !", "5 €", 1, "entrees");
+        final Dish sCarottes = new Dish("100", "Salade de carottes à l'orientale", "Salade de carottes à l'orientale, cumin, huile argan", "6 €", 0, "entrees");
+        final Dish bsales = new Dish("100", "Beignets salés", "Beignets salés", "4 €", 0, "entrees");
+
+        final Dish tajin = new Dish("100", "Tajin", "C’est une préparation sucrée ou salée où l’ont utilisé toutes les viandes, tous les poissons, les légumes comme les fruits.", "15 €", 5, "plats");
+        final Dish couscous = new Dish("100", "Couscous", "Composé d’un mélange de viande, de légumes et de semoule de blé cuite à la vapeur", "12 €", 2, "plats");
+        final Dish pastilla = new Dish("100", "Pastilla", "Il s’agit d’un feuilleté, fabriqué à partir de feuilles brick, farci de viande ou de poulet. Le tout est recouvert de sucre et de cannelle.", "13 €", 3, "plats");
+
+        final Dish baklavas = new Dish("100", "Baklavas", "Baklavas aux amandes et pistaches", "3 €", 0, "desserts");
+        final Dish corne = new Dish("100", "Corne", "Corne de gazelle", "4 €", 0, "desserts");
+        final Dish msemen = new Dish("100", "Msemen", "Msemen (crêpes marocaines)", "4 €", 0, "desserts");
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                // Create a new child with a auto-generated ID.
+               /* // Create a new child with a auto-generated ID.
                 DatabaseReference childRef = myRef.push();
 
                 // Set the child's data to the value passed in from the text box.
-                childRef.setValue(text.getText().toString());
+                childRef.setValue(text.getText().toString());*/
+                // Create a new child with a auto-generated ID.
+                DatabaseReference refbpoulet = menuRef.push();
+                DatabaseReference refsCarottes = menuRef.push();
+                DatabaseReference refbsales = menuRef.push();
+                DatabaseReference reftajin = menuRef.push();
+                DatabaseReference refcouscous = menuRef.push();
+                DatabaseReference refpastilla = menuRef.push();
+                DatabaseReference refbaklavas = menuRef.push();
+                DatabaseReference refcorne = menuRef.push();
+                DatabaseReference refmsemen = menuRef.push();
+
+                // Set the child's data to the value passed in from the text box.
+                refbpoulet.setValue(bpoulet);
+                refsCarottes.setValue(sCarottes);
+                refbsales.setValue(bsales);
+                reftajin.setValue(tajin);
+                refcouscous.setValue(couscous);
+                refpastilla.setValue(pastilla);
+                refbaklavas.setValue(baklavas);
+                refcorne.setValue(corne);
+                refmsemen.setValue(msemen);
 
             }
         });
@@ -100,7 +135,7 @@ public class TestFireBase extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Query myQuery = myRef.orderByValue().equalTo((String)
+                Query myQuery = menuRef.orderByValue().equalTo((String)
                         listView.getItemAtPosition(position));
 
                 myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
