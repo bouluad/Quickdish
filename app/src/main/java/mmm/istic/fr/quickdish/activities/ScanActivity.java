@@ -215,6 +215,7 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        qrCode = "10003";
         //show the menu list
         showMenuList("100");
 
@@ -228,7 +229,8 @@ public class ScanActivity extends AppCompatActivity {
 
                     Barcode code = barcodes.valueAt(0);
 
-                    qrCode = code.displayValue;
+
+                    //qrCode = code.displayValue;
 
                     //scanResults.setText(scanResults.getText() + code.displayValue + "\n");
                     System.err.println("ID RESTAURANT = "+ code.displayValue.substring(0, 3));
