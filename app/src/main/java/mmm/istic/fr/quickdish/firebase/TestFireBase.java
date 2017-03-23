@@ -1,4 +1,4 @@
-package mmm.istic.fr.quickdish;
+package mmm.istic.fr.quickdish.firebase;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import mmm.istic.fr.quickdish.R;
 
 
 public class TestFireBase extends AppCompatActivity {

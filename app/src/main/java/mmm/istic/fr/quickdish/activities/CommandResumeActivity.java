@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import mmm.istic.fr.quickdish.R;
-import mmm.istic.fr.quickdish.activities.bo.Order;
+import mmm.istic.fr.quickdish.bo.Order;
+
 
 public class CommandResumeActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package mmm.istic.fr.quickdish.activities.bo;
+package mmm.istic.fr.quickdish.bo;
 
 /**
  * Created by bouluad on 20/03/17.
