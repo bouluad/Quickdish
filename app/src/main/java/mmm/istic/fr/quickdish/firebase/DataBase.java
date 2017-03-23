@@ -26,7 +26,7 @@ public class DataBase {
     public void getDishsByRestoId(String id, final Command c) {
 
         // Get a reference to the todoItems child items it the database
-        final DatabaseReference myRef = database.getReference(id);
+        final DatabaseReference myRef = database.getReference(id).child("menu");
 
 
         myRef.addChildEventListener(new ChildEventListener() {

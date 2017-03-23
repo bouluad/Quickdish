@@ -61,80 +61,19 @@ public class ScanActivity extends AppCompatActivity {
     JSONObject jsonResult;
 
     //Database
-    FirebaseDatabase database;
+    DataBase database;
 
     //Order
     private Order order;
-    List<Dish> dishs = new ArrayList<Dish>();
+    List<Dish> dishes = new ArrayList<Dish>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        DataBase database = new DataBase();
-        database.getDishsByRestoId("todoItems", new DataBase.Command() {
-            @Override
-            public void exec(Object o) {
-                System.out.println("ceci est un commentaire lol :"+((Dish) o).getTitle());
-            }
-        });
-
-
-/*        // Connect to the Firebase database
-        database = FirebaseDatabase.getInstance();
-
-        final Dish dish1 = new Dish("1", "salade", "description \n blablabla", "10 €", 0, "entrees");
-        final Dish dish2 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "plats");
-        final Dish dish3 = new Dish("1", "Pizza", "description \n blablabla", "10 €", 0, "desserts");
-
-        // Get a reference to the todoItems child items it the database
-        final DatabaseReference myRef = database.getReference("Dishs");
-
-        final Button scanButton = (Button) findViewById(R.id.scanButton);
-
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                // Create a new child with a auto-generated ID.
-                DatabaseReference childRef1 = myRef.push();
-                DatabaseReference childRef2 = myRef.push();
-                DatabaseReference childRef3 = myRef.push();
-                // Set the child's data to the value passed in from the text box.
-                childRef1.setValue(dish1);
-                childRef2.setValue(dish2);
-                childRef3.setValue(dish3);
-
-            }
-        });*/
+        // initialize database
+        database = new DataBase();
 
         //initialise jsonResult for test
         try {
@@ -147,13 +86,16 @@ public class ScanActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Button button = (Button) findViewById(R.id.scanButton);
+
         scanResults = (TextView) findViewById(R.id.scan_results);
         if (savedInstanceState != null) {
             imageUri = Uri.parse(savedInstanceState.getString(SAVED_INSTANCE_URI));
             scanResults.setText(savedInstanceState.getString(SAVED_INSTANCE_RESULT));
         }
-        button.setOnClickListener(new View.OnClickListener() {
+
+        // Create listener for scanButton
+        Button scanButton = (Button) findViewById(R.id.scanButton);
+        scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ActivityCompat.requestPermissions(ScanActivity.this, new
@@ -161,6 +103,7 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
 
+        // Create detector to get qrCode
         detector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                 .build();
@@ -190,12 +133,12 @@ public class ScanActivity extends AppCompatActivity {
                                         int groupPosition, int childPosition, long id) {
 
 
-                dishs.add(totalDishs[0], new Dish("1", listDataChild.get(
+                dishes.add(totalDishs[0], new Dish("1", listDataChild.get(
                         itemList.get(groupPosition)).get(
                         childPosition), "description \n blablabla", "10 €", 0, "entree"));
 
                 totalDishs[0]++;
-                order = new Order(dishs, totalDishs[0], "1", false);
+                order = new Order(dishes, totalDishs[0], "1", false);
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -237,15 +180,39 @@ public class ScanActivity extends AppCompatActivity {
 
     //parse result (json file) and add elements to menu list
     public void showMenuList (){
-        // show the ingredients
-        List<String> entrees = new ArrayList<String>();
-        List<String> plats = new ArrayList<String>();
-        List<String> desserts = new ArrayList<String>();
+        // show the menu
+        final List<String> entrees = new ArrayList<String>();
+        final List<String> plats = new ArrayList<String>();
+        final List<String> desserts = new ArrayList<String>();
 
+        database.getDishsByRestoId("100", new DataBase.Command() {
+            @Override
+            public void exec(Object o) {
+                Dish dish = ((Dish) o);
+                String type = dish.getType();
+                switch (type){
+                    case "entrees":
+                        entrees.add(dish.getTitle());
+                        break;
+                    case "plats":
+                        plats.add(dish.getTitle());
+                        break;
+                    case "desserts":
+                        desserts.add(dish.getTitle());
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println("ceci est un commentaire lol :"+((Dish) o).getTitle());
+            }
+        });
 
+        listDataChild.put(itemList.get(0), entrees);
+        listDataChild.put(itemList.get(1), plats);
+        listDataChild.put(itemList.get(2), desserts);
 
         //parse jsonResult to show information
-        JSONArray jsonEntrees = new JSONArray();
+/*        JSONArray jsonEntrees = new JSONArray();
         JSONArray jsonPlats = new JSONArray();
         JSONArray jsonDesserts = new JSONArray();
         try {
@@ -280,11 +247,7 @@ public class ScanActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-
-        listDataChild.put(itemList.get(0), entrees);
-        listDataChild.put(itemList.get(1), plats);
-        listDataChild.put(itemList.get(2), desserts);
+        }*/
     }
 
     // request the firebase to get menu list by barcode
