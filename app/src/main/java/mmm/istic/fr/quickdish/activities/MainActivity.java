@@ -5,7 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mmm.istic.fr.quickdish.R;
+import mmm.istic.fr.quickdish.bo.Dish;
+import mmm.istic.fr.quickdish.firebase.DataBase;
+
+import static mmm.istic.fr.quickdish.firebase.DataBase.*;
 
 public class MainActivity extends AppCompatActivity {
 

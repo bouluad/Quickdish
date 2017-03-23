@@ -3,11 +3,13 @@ package mmm.istic.fr.quickdish.firebase;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mmm.istic.fr.quickdish.bo.Dish;
@@ -26,41 +28,46 @@ public class DataBase {
 
     }
 
-    public List<Dish> getDishsByRestoId (String id){
-// Get a reference to the todoItems child items it the database
+    public interface Command {
+        public void exec (Object o);
+    }
+
+    public void getDishsByRestoId (String id, final Command c){
+
+        // Get a reference to the todoItems child items it the database
         final DatabaseReference myRef = database.getReference(id);
 
 
         myRef.addChildEventListener(new ChildEventListener() {
 
-            // This function is called once for each child that exists
-            // when the listener is added. Then it is called
-            // each time a new child is added.
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                String value = dataSnapshot.getValue(String.class);
-                //adapter.add(value);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Dish dish = dataSnapshot.getValue(Dish.class);
+                if (dish!=null){
+                    System.out.println(dish.getTitle()+" "+dish.getDescription());
+                    c.exec(dish);
+                }
             }
 
-            // This function is called each time a child item is removed.
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                //adapter.remove(value);
-            }
 
-            // The following functions are also required in ChildEventListener implementations.
-            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-            }
-
-            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TAG:", "Failed to read value.", error.toException());
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-        return null;
     }
 }

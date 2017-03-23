@@ -36,6 +36,7 @@ import java.util.List;
 import mmm.istic.fr.quickdish.R;
 import mmm.istic.fr.quickdish.bo.Dish;
 import mmm.istic.fr.quickdish.bo.Order;
+import mmm.istic.fr.quickdish.firebase.DataBase;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -70,6 +71,14 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+        DataBase database = new DataBase();
+        database.getDishsByRestoId("todoItems", new DataBase.Command() {
+            @Override
+            public void exec(Object o) {
+                System.out.println("ceci est un commentaire lol :"+((Dish) o).getTitle());
+            }
+        });
 
 
 /*        // Connect to the Firebase database
