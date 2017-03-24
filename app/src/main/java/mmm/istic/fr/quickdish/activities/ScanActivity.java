@@ -2,29 +2,31 @@ package mmm.istic.fr.quickdish.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -44,31 +46,26 @@ public class ScanActivity extends AppCompatActivity {
     //barcode scanner
     private static final String LOG_TAG = "Barcode Scanner API";
     private static final int PHOTO_REQUEST = 10;
-    private TextView scanResults;
-    private BarcodeDetector detector;
-    private Uri imageUri;
     private static final int REQUEST_WRITE_PERMISSION = 20;
     private static final String SAVED_INSTANCE_URI = "uri";
     private static final String SAVED_INSTANCE_RESULT = "result";
-
     //Menu list
     android.widget.ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> itemList;
     HashMap<String, List<Dish>> listDataChild;
-
-    //save qrcode
-    private String qrCode;
-
     //Save menu list in JSONObject
     JSONObject jsonResult;
-
     //Database
     DataBase database;
-
+    List<Dish> dishes = new ArrayList<Dish>();
+    private TextView scanResults;
+    private BarcodeDetector detector;
+    private Uri imageUri;
+    //save qrcode
+    private String qrCode;
     //Order
     private Order order;
-    List<Dish> dishes = new ArrayList<Dish>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +136,6 @@ public class ScanActivity extends AppCompatActivity {
         });
 
 
-
         // initialise the menu list display
         itemList.clear();
         itemList.add("Entrées");
@@ -149,24 +145,12 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     // validate the command by click on button validate
-    public void validateCommand(View view){
-        System.out.println(order.dishsToString());
-
-        Intent myIntent = new Intent( ScanActivity.this, CommandResumeActivity.class);
-
-
-        // passe the order to next activity
-        myIntent.putExtra("order", order);
-        setResult(10, myIntent);
-        finish();
-
-        startActivity(myIntent);
-
-
+    public void validateCommand(View view) {
+        alertMessage();
     }
 
     //parse result (json file) and add elements to menu list
-    public void showMenuList (String barcode){
+    public void showMenuList(String barcode) {
         // show the menu
         final List<Dish> entrees = new ArrayList<Dish>();
         final List<Dish> plats = new ArrayList<Dish>();
@@ -177,7 +161,7 @@ public class ScanActivity extends AppCompatActivity {
             public void exec(Object o) {
                 Dish dish = ((Dish) o);
                 String type = dish.getType();
-                switch (type){
+                switch (type) {
                     case "entrees":
                         entrees.add(dish);
                         break;
@@ -190,7 +174,7 @@ public class ScanActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-                System.out.println("ceci est un commentaire lol :"+((Dish) o).getTitle());
+                System.out.println("ceci est un commentaire lol :" + ((Dish) o).getTitle());
             }
         });
 
@@ -233,7 +217,7 @@ public class ScanActivity extends AppCompatActivity {
                     //qrCode = code.displayValue;
 
                     //scanResults.setText(scanResults.getText() + code.displayValue + "\n");
-                    System.err.println("ID RESTAURANT = "+ code.displayValue.substring(0, 3));
+                    System.err.println("ID RESTAURANT = " + code.displayValue.substring(0, 3));
                     //showMenuList(code.displayValue.substring(0, 3));
 
 
@@ -291,6 +275,37 @@ public class ScanActivity extends AppCompatActivity {
 
         return BitmapFactory.decodeStream(ctx.getContentResolver()
                 .openInputStream(uri), null, bmOptions);
+    }
+
+    public void alertMessage() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // Yes button clicked
+
+                        Intent myIntent = new Intent(ScanActivity.this, CommandResumeActivity.class);
+
+                        // passe the order to next activity
+                        myIntent.putExtra("order", order);
+                        setResult(10, myIntent);
+                        finish();
+                        startActivity(myIntent);
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // No button clicked
+                        // do nothing
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to place order?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
 }
