@@ -23,6 +23,14 @@ public class Order implements Serializable {
         this.validation = validation;
     }
 
+    public Order(int id, List<Dish> dishes, int quantity, boolean validation, String tableNumber) {
+        this.id = id;
+        this.dishes = dishes;
+        this.quantity = quantity;
+        this.validation = validation;
+        this.tableNumber = tableNumber;
+    }
+
     public Order() {
 
     }

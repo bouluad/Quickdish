@@ -113,6 +113,10 @@ public class ScanActivity extends AppCompatActivity {
         // setting list adapter
         expListView.setAdapter(listAdapter);
 
+
+
+
+
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -123,7 +127,16 @@ public class ScanActivity extends AppCompatActivity {
 
                 dishes.add(listDataChild.get(itemList.get(groupPosition)).get(childPosition));
 
-                order = new Order(dishes, 1, qrCode, false);
+                database.getLastIdOrder(new DataBase.Command() {
+                    @Override
+                    public void exec(Object o) {
+                        System.out.println("ID -----> "+String.valueOf(o));
+                        order = new Order((Integer.valueOf(String.valueOf(o))+1), dishes, 1, false, qrCode);
+                        System.out.println("ID -----> "+order.getId());
+                    }
+                });
+
+
 
                 Toast.makeText(
                         getApplicationContext(),
