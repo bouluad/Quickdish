@@ -20,6 +20,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -181,6 +182,8 @@ public class ScanActivity extends AppCompatActivity {
         listDataChild.put(itemList.get(0), entrees);
         listDataChild.put(itemList.get(1), plats);
         listDataChild.put(itemList.get(2), desserts);
+
+        ImageSwitcher imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
     }
 
     @Override
