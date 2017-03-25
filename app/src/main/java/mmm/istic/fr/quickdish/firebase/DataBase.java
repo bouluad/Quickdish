@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import mmm.istic.fr.quickdish.bo.Client;
 import mmm.istic.fr.quickdish.bo.Dish;
 import mmm.istic.fr.quickdish.bo.Order;
 
@@ -67,6 +68,15 @@ public class DataBase {
 
         DatabaseReference databaseReference = orderRef.push();
         databaseReference.setValue(order);
+
+    }
+
+    public void saveClient(Client client, String qrCode) {
+
+        final DatabaseReference orderRef = database.getReference(qrCode.substring(0, 3)).child("clients");
+
+        DatabaseReference databaseReference = orderRef.push();
+        databaseReference.setValue(client);
 
     }
 
