@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,29 +11,70 @@
     tools:context=".activities.MainActivity">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
-
-
-        <Button
-            android:onClick="orderMenuActivity"
-            android:layout_margin="15dp"
-            android:text="Order"
+        <info.hoang8f.widget.FButton
             android:id="@+id/orderButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:drawablePadding="0dp"
+            android:minHeight="80dp"
+            android:minWidth="250dp"
+            android:onClick="orderMenuActivity"
+            android:paddingLeft="30dp"
+            android:paddingRight="20dp"
+            android:paddingTop="-5dp"
+            android:text="Order"
+            android:textColor="@android:color/white"
+            fbutton:buttonColor="@color/monsoon"
+            fbutton:cornerRadius="15dp"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="6dp" />
 
-        <Button
-            android:onClick="createCardActivity"
-            android:layout_margin="15dp"
-            android:text="Create fidelity card"
+
+        <!--<Button-->
+        <!--android:onClick="orderMenuActivity"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:text="Order"-->
+        <!--android:id="@+id/orderButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+        <!--<Button-->
+        <!--android:id="@+id/createCardButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:onClick="createCardActivity"-->
+        <!--android:text="Create fidelity card" />-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/createCardButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:drawablePadding="0dp"
+            android:minHeight="80dp"
+            android:minWidth="250dp"
+            android:onClick="createCardActivity"
+            android:paddingLeft="30dp"
+            android:paddingRight="20dp"
+            android:paddingTop="-5dp"
+            android:text="Create fidelity card"
+            android:textColor="@android:color/white"
+            fbutton:buttonColor="@color/monsoon"
+            fbutton:cornerRadius="15dp"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="6dp" />
 
 
     </LinearLayout>

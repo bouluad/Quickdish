@@ -29,6 +29,7 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.5.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:design:25.0.1'
+    compile 'info.hoang8f:fbutton:1.0.5'
 
 
 
