@@ -17,6 +17,10 @@ public class DataBase {
 
     FirebaseDatabase database;
 
+    public FirebaseDatabase getDatabase() {
+        return database;
+    }
+
     public DataBase() {
 
         // Connect to the Firebase database
@@ -64,7 +68,7 @@ public class DataBase {
 
     public void saveOrders(Order order) {
 
-        final DatabaseReference orderRef = database.getReference(order.getTableNumber().substring(0, 3)).child("order");
+        final DatabaseReference orderRef = database.getReference(order.getTableNumber().substring(0, 3)).child("order").child(String.valueOf(order.getId()));
 
         DatabaseReference databaseReference = orderRef.push();
         databaseReference.setValue(order);
