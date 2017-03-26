@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:wheel="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_command_resume"
@@ -58,14 +59,21 @@
             android:hint="Your order in preparation ..." />
     </RelativeLayout>
 
-    <Button
+
+    <info.hoang8f.widget.FButton
         android:id="@+id/saveCommandButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="14dp"
+        android:minHeight="@dimen/demo_button_min_height"
+        android:minWidth="160dp"
         android:onClick="passOrder"
-        android:text="Save Command" />
+        android:text="Save Command"
+        android:textColor="@android:color/white"
+        fbutton:buttonColor="@color/jumbo"
+        fbutton:shadowEnabled="true" />
 
 </RelativeLayout>
