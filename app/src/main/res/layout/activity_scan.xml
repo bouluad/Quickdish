@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_scan"
     android:layout_width="match_parent"
@@ -16,34 +17,67 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </ExpandableListView>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/scanButton"></ExpandableListView>
 
     <TextView
         android:id="@+id/scan_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
-    <Button
+    <!--<Button-->
+    <!--android:id="@+id/scanButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="13dp"-->
+    <!--android:text="Scan QR code"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_marginStart="18dp" />-->
+
+    <info.hoang8f.widget.FButton
         android:id="@+id/scanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="13dp"
-        android:text="Scan QR code"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="18dp" />
+        android:layout_alignStart="@+id/validateButton"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="@dimen/demo_button_min_height"
+        android:minWidth="@dimen/demo_button_min_width"
+        android:text="Scan QR code"
+        android:textColor="@android:color/white"
+        fbutton:buttonColor="@color/jumbo"
+        fbutton:shadowEnabled="true" />
 
-    <Button
-        android:onClick="validateCommand"
+
+    <!--<Button-->
+    <!--android:id="@+id/validateButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBaseline="@+id/scanButton"-->
+    <!--android:layout_alignBottom="@+id/scanButton"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_marginEnd="24dp"-->
+    <!--android:onClick="validateCommand"-->
+    <!--android:text="validate command" />-->
+
+    <info.hoang8f.widget.FButton
         android:id="@+id/validateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lvExp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="@dimen/demo_button_min_height"
+        android:minWidth="160dp"
+        android:onClick="validateCommand"
         android:text="validate command"
-        android:layout_alignBaseline="@+id/scanButton"
-        android:layout_alignBottom="@+id/scanButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="24dp" />
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        fbutton:buttonColor="@color/jumbo"
+        fbutton:shadowEnabled="true" />
+
 </RelativeLayout>
