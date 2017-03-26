@@ -51,18 +51,41 @@ public class CommandResumeActivity extends AppCompatActivity {
 
 
     public void passOrder(View view) {
-        dataBase.saveOrders(order);
+        final String key = dataBase.saveOrders(order);
         progressWheel.setVisibility(View.VISIBLE);
         textView.setVisibility(View.VISIBLE);
         view.setVisibility(view.INVISIBLE);
 
         myRef = dataBase.getDatabase().getReference(order.getTableNumber().substring(0, 3)).child("order");
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                progressWheel.setVisibility(View.INVISIBLE);
-                textView.setText("Your order is ready en chantant lalalala");
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                System.out.println("key of order firebase ----> "+ key);
+                String key1 = dataSnapshot.getRef().getKey();
+                String valid = dataSnapshot.getRef().child("validation").toString();
+                System.out.println("key of order changed in database "+ valid);
+                if (key.equals(key1)){
+                    progressWheel.setVisibility(View.INVISIBLE);
+                    textView.setText("Your order is ready !!! ");
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

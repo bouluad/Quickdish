@@ -129,13 +129,7 @@ public class ScanActivity extends AppCompatActivity {
 
                 dishes.add(listDataChild.get(itemList.get(groupPosition)).get(childPosition));
 
-                database.getLastIdOrder(new DataBase.Command() {
-                    @Override
-                    public void exec(Object o) {
-                        order = new Order((Integer.valueOf(String.valueOf(o)) + 1), dishes, 1, false, qrCode);
-                    }
-                });
-
+                order = new Order(dishes, 1,  qrCode, false);
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -147,6 +141,14 @@ public class ScanActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+/*        database.getLastIdOrder(new DataBase.Command() {
+            @Override
+            public void exec(Object o) {
+                order = new Order(dishes, 1,  qrCode, false);
+            }
+        });*/
 
 
         // initialise the menu list display
