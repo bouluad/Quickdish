@@ -20,7 +20,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +81,7 @@ public class ScanActivity extends AppCompatActivity {
             scanResults.setText(savedInstanceState.getString(SAVED_INSTANCE_RESULT));
         }
 
+        final Button validateButton = (Button) findViewById(R.id.validateButton);
         // Create listener for scanButton
         Button scanButton = (Button) findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +89,9 @@ public class ScanActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ActivityCompat.requestPermissions(ScanActivity.this, new
                         String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+
+                view.setVisibility(View.INVISIBLE);
+                validateButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -114,9 +117,6 @@ public class ScanActivity extends AppCompatActivity {
         expListView.setAdapter(listAdapter);
 
 
-
-
-
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -130,12 +130,9 @@ public class ScanActivity extends AppCompatActivity {
                 database.getLastIdOrder(new DataBase.Command() {
                     @Override
                     public void exec(Object o) {
-                        System.out.println("ID -----> "+String.valueOf(o));
-                        order = new Order((Integer.valueOf(String.valueOf(o))+1), dishes, 1, false, qrCode);
-                        System.out.println("ID -----> "+order.getId());
+                        order = new Order((Integer.valueOf(String.valueOf(o)) + 1), dishes, 1, false, qrCode);
                     }
                 });
-
 
 
                 Toast.makeText(
@@ -188,7 +185,6 @@ public class ScanActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-                System.out.println("ceci est un commentaire lol :" + ((Dish) o).getTitle());
             }
         });
 
@@ -196,7 +192,7 @@ public class ScanActivity extends AppCompatActivity {
         listDataChild.put(itemList.get(1), plats);
         listDataChild.put(itemList.get(2), desserts);
 
-        ImageSwitcher imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
+        // ImageSwitcher imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
     }
 
     @Override

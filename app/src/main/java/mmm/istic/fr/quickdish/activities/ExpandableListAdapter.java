@@ -31,7 +31,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return (this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon)).getTitle();
+        return (this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Dish childText = (Dish) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -54,13 +54,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(childText);
+        TextView txtDescription = (TextView) convertView
+                .findViewById(R.id.txtvalue);
+
+        txtListChild.setText(childText.getTitle() + " | " + childText.getPrice());
+        txtDescription.setText(childText.getDescription());
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this._listDataChild.size() == 0){
+        if (this._listDataChild.size() == 0) {
             return 0;
         }
         return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
