@@ -290,34 +290,41 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     public void alertMessage() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // Yes button clicked
 
-                        Intent myIntent = new Intent(ScanActivity.this, CommandResumeActivity.class);
+        if (order != null) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            // Yes button clicked
 
-                        // passe the order to next activity
-                        myIntent.putExtra("order", order);
-                        setResult(10, myIntent);
-                        finish();
-                        startActivity(myIntent);
+                            Intent myIntent = new Intent(ScanActivity.this, CommandResumeActivity.class);
 
-                        break;
+                            // passe the order to next activity
+                            myIntent.putExtra("order", order);
+                            setResult(10, myIntent);
+                            finish();
+                            startActivity(myIntent);
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        // No button clicked
-                        // do nothing
-                        break;
+
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            // No button clicked
+                            // do nothing
+                            break;
+                    }
                 }
-            }
-        };
+            };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want to place order?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Do you want to place order?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        } else {
+
+            Toast.makeText(getApplicationContext(), "You must choose at least one dish", Toast.LENGTH_SHORT).show();
+        }
+
     }
-
 }
