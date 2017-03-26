@@ -1,6 +1,5 @@
 package mmm.istic.fr.quickdish.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mmm.istic.fr.quickdish.R;
+import mmm.istic.fr.quickdish.bo.Client;
+import mmm.istic.fr.quickdish.firebase.DataBase;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -53,19 +54,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-
         String name = _nameText.getText().toString();
         String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
         String mobile = _mobileText.getText().toString();
 
+        Client client = new Client(0, name, email, address, mobile);
 
-        // TODO: Implement your own signup logic here.
+        DataBase dataBase = new DataBase();
+
+        dataBase.saveClient(client, "10000");
 
 
     }

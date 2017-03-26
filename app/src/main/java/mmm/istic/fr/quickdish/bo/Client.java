@@ -9,6 +9,7 @@ public class Client {
     private String fullName;
     private String email;
     private String address;
+    private String mobile;
     private int numberOfPoints;
 
 
@@ -16,11 +17,12 @@ public class Client {
 
     }
 
-    public Client(int numberOfPoints, String fullName, String email, String address) {
+    public Client(int numberOfPoints, String fullName, String email, String address, String mobile) {
         this.numberOfPoints = numberOfPoints;
         this.fullName = fullName;
         this.email = email;
         this.address = address;
+        this.mobile = mobile;
     }
 
     public int getId() {
@@ -61,5 +63,13 @@ public class Client {
 
     public void setNumberOfPoints(int numberOfPoints) {
         this.numberOfPoints = numberOfPoints;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
