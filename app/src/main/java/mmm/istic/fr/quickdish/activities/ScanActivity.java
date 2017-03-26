@@ -129,7 +129,7 @@ public class ScanActivity extends AppCompatActivity {
 
                 dishes.add(listDataChild.get(itemList.get(groupPosition)).get(childPosition));
 
-                order = new Order(dishes, 1,  qrCode, false);
+                order = new Order(dishes, 1, qrCode, false);
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -233,7 +233,6 @@ public class ScanActivity extends AppCompatActivity {
                     //qrCode = code.displayValue;
 
                     //scanResults.setText(scanResults.getText() + code.displayValue + "\n");
-                    System.err.println("ID RESTAURANT = " + code.displayValue.substring(0, 3));
                     //showMenuList(code.displayValue.substring(0, 3));
 
 

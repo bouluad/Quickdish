@@ -11,23 +11,20 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import mmm.istic.fr.quickdish.R;
-import mmm.istic.fr.quickdish.bo.Dish;
 import mmm.istic.fr.quickdish.bo.Order;
 import mmm.istic.fr.quickdish.firebase.DataBase;
 
 
 public class CommandResumeActivity extends AppCompatActivity {
 
+    DatabaseReference myRef;
     private ProgressWheel progressWheel;
     private TextView textView;
     private Order order;
     private DataBase dataBase;
-
-    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +44,7 @@ public class CommandResumeActivity extends AppCompatActivity {
         String orderString = order.dishsToString();
         TextView resumeCommand = (TextView) findViewById(R.id.resumeCommand);
         resumeCommand.setText(orderString);
+
     }
 
 
@@ -68,13 +66,11 @@ public class CommandResumeActivity extends AppCompatActivity {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                System.out.println("key of order firebase ----> "+ key);
                 String key1 = dataSnapshot.getRef().getKey();
                 String valid = dataSnapshot.getRef().child("validation").toString();
-                System.out.println("key of order changed in database "+ valid);
-                if (key.equals(key1)){
+                if (key.equals(key1)) {
                     progressWheel.setVisibility(View.INVISIBLE);
-                    textView.setText("Your order is ready !!! ");
+                    textView.setText("Your order are ready ...");
                 }
             }
 
