@@ -70,8 +70,8 @@ public class CommandResumeActivity extends AppCompatActivity {
 
                 System.out.println("key of order firebase ----> "+ key);
                 String key1 = dataSnapshot.getRef().getKey();
-                String valid = dataSnapshot.getRef().child("validation").toString();
-                System.out.println("key of order changed in database "+ valid);
+                //String valid = dataSnapshot.getRef().child("validation").toString();
+                System.out.println("key of order changed in database "+ key1);
                 if (key.equals(key1)){
                     progressWheel.setVisibility(View.INVISIBLE);
                     textView.setText("Your order is ready !!! ");
