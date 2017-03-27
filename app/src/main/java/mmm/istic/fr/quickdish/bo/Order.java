@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Order implements Serializable {
 
-    private int id;
+    private String id;
     private List<Dish> dishes;
     private int quantity;
     private String tableNumber;
@@ -23,7 +23,7 @@ public class Order implements Serializable {
         this.validation = validation;
     }
 
-    public Order(int id, List<Dish> dishes, int quantity, boolean validation, String tableNumber) {
+    public Order(String id, List<Dish> dishes, int quantity, boolean validation, String tableNumber) {
         this.id = id;
         this.dishes = dishes;
         this.quantity = quantity;
@@ -37,18 +37,18 @@ public class Order implements Serializable {
 
 
     protected Order(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         quantity = in.readInt();
         tableNumber = in.readString();
         validation = in.readByte() != 0;
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
