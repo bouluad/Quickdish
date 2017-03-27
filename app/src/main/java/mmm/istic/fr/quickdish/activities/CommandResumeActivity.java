@@ -66,9 +66,13 @@ public class CommandResumeActivity extends AppCompatActivity {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                System.out.println("key of order firebase ----> "+ key);
                 String key1 = dataSnapshot.getRef().getKey();
                 String valid = dataSnapshot.getRef().child("validation").toString();
-                if (key.equals(key1)) {
+                //if (key.equals(key1)) {
+                //String valid = dataSnapshot.getRef().child("validation").toString();
+                System.out.println("key of order changed in database "+ key1);
+                if (key.equals(key1)){
                     progressWheel.setVisibility(View.INVISIBLE);
                     textView.setText("Your order are ready ...");
                 }
