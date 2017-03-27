@@ -19,15 +19,15 @@ public class DataBase {
 
     FirebaseDatabase database;
 
-    public FirebaseDatabase getDatabase() {
-        return database;
-    }
-
     public DataBase() {
 
         // Connect to the Firebase database
         database = FirebaseDatabase.getInstance();
 
+    }
+
+    public FirebaseDatabase getDatabase() {
+        return database;
     }
 
     public void getDishsByRestoId(String id, final Command c) {
@@ -74,6 +74,7 @@ public class DataBase {
 
         DatabaseReference databaseReference = orderRef.push();
         String key = databaseReference.getKey();
+        order.setId(key);
         databaseReference.setValue(order);
         return key;
 
@@ -89,7 +90,7 @@ public class DataBase {
     }
 
 
-    public void getLastIdOrder (final Command c){
+    public void getLastIdOrder(final Command c) {
         final DatabaseReference databaseReference = database.getReference("100");
         Query lastQuery = databaseReference.child("order").orderByKey().limitToLast(1);
 
@@ -98,7 +99,7 @@ public class DataBase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot dataSnapshot1 = dataSnapshot.getChildren().iterator().next();//.getValue(Order.class);
                 //Order order = dataSnapshot1.getValue(Order.class);
-                System.out.println("la clé de firebase lastquery "+ dataSnapshot1.getRef().getKey());
+                System.out.println("la clé de firebase lastquery " + dataSnapshot1.getRef().getKey());
 
                 //System.out.println(dataSnapshot.child("-Kg5UA8l6gztUkdEtyN1").getValue().toString());
                 //System.out.println("last dish id ----> "+order.getId());

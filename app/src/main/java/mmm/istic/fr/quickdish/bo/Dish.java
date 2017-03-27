@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Dish implements Serializable {
 
-    private int id;
+    private String id;
     private String idResto;
     private String title;
     private String description;
@@ -28,7 +28,7 @@ public class Dish implements Serializable {
         this.type = type;
     }
 
-    public Dish(int id, String idResto, String title, String description, String price, int numberOfPoint) {
+    public Dish(String id, String idResto, String title, String description, String price, int numberOfPoint) {
         this.id = id;
         this.idResto = idResto;
         this.title = title;
@@ -37,11 +37,11 @@ public class Dish implements Serializable {
         this.numberOfPoint = numberOfPoint;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
